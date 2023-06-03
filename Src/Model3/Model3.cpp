@@ -296,10 +296,22 @@ UINT8 CModel3::ReadInputs(unsigned reg)
 
     if ((m_game.inputs & Game::INPUT_JOYSTICK1))
     {
-      data &= ~(Inputs->up[0]->value<<5);     // P1 Up
-      data &= ~(Inputs->down[0]->value<<4);   // P1 Down
-      data &= ~(Inputs->left[0]->value<<7);   // P1 Left
-      data &= ~(Inputs->right[0]->value<<6);  // P1 Right
+      /*
+      Implementing SOCD: pressing left and right simultaneously should result in neutral,
+                         down+up results in up direction
+      */
+      if (Inputs->up[0]->value && Inputs->down[0]->value){
+        data &= ~(Inputs->up[0]->value<<5);     // P1 Up
+      }
+      else{
+        data &= ~(Inputs->up[0]->value<<5);     // P1 Up
+        data &= ~(Inputs->down[0]->value<<4);   // P1 Down
+      }
+
+      if (Inputs->left[0]->value && Inputs->right[0]->value) {} else {
+        data &= ~(Inputs->left[0]->value<<7);   // P1 Left
+        data &= ~(Inputs->right[0]->value<<6);  // P1 Right
+      }
     }
 
     if ((m_game.inputs & Game::INPUT_FIGHTING))
@@ -489,10 +501,22 @@ UINT8 CModel3::ReadInputs(unsigned reg)
 
     if ((m_game.inputs & Game::INPUT_JOYSTICK2))
     {
-      data &= ~(Inputs->up[1]->value<<5);     // P2 Up
-      data &= ~(Inputs->down[1]->value<<4);   // P2 Down
-      data &= ~(Inputs->left[1]->value<<7);   // P2 Left
-      data &= ~(Inputs->right[1]->value<<6);  // P2 Right
+      /*
+      Implementing SOCD: pressing left and right simultaneously should result in neutral,
+                         down+up results in up direction
+      */
+      if (Inputs->up[1]->value && Inputs->down[1]->value){
+        data &= ~(Inputs->up[1]->value<<5);     // P1 Up
+      }
+      else{
+        data &= ~(Inputs->up[1]->value<<5);     // P1 Up
+        data &= ~(Inputs->down[1]->value<<4);   // P1 Down
+      }
+
+      if (Inputs->left[1]->value && Inputs->right[1]->value) {} else {
+        data &= ~(Inputs->left[1]->value<<7);   // P1 Left
+        data &= ~(Inputs->right[1]->value<<6);  // P1 Right
+      }
     }
 
     if ((m_game.inputs & Game::INPUT_FIGHTING))
